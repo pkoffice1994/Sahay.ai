@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sahay AI — Kota ke liye</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #08090d; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; }
+
+.setup { width: 100%; max-width: 440px; background: #0c1118; border-radius: 18px; border: 0.5px solid rgba(255,255,255,0.07); padding: 28px; }
+.setup-logo { font-size: 22px; font-weight: 500; color: #ddd9d0; margin-bottom: 6px; }
+.setup-logo span { color: #6fcba8; }
+.setup-tagline { font-size: 13px; color: rgba(221,217,208,0.4); margin-bottom: 24px; font-weight: 300; }
+.setup-label { font-size: 12px; color: rgba(221,217,208,0.55); margin-bottom: 6px; }
+.setup-input { width: 100%; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 11px 14px; font-size: 13px; color: #ddd9d0; font-family: 'DM Sans', sans-serif; outline: none; margin-bottom: 10px; }
+.setup-input:focus { border-color: rgba(111,203,168,0.4); }
+.setup-input::placeholder { color: rgba(221,217,208,0.2); }
+.setup-btn { width: 100%; background: #6fcba8; border: none; color: #0c1118; font-size: 14px; font-weight: 500; padding: 12px; border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 14px; }
+.setup-btn:hover { opacity: 0.85; }
+.setup-note { font-size: 11px; color: rgba(221,217,208,0.25); line-height: 1.7; }
+.setup-note a { color: rgba(111,203,168,0.6); }
+.setup-err { background: rgba(226,75,74,0.1); border: 0.5px solid rgba(226,75,74,0.2); border-radius: 8px; padding: 9px 12px; font-size: 12px; color: rgba(240,149,149,0.85); margin-bottom: 10px; display: none; }
+
+.app { display: none; width: 100%; max-width: 480px; background: #0c1118; border-radius: 18px; overflow: hidden; border: 0.5px solid rgba(255,255,255,0.07); flex-direction: column; height: 620px; }
+.topbar { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: #111820; border-bottom: 0.5px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+.av { width: 36px; height: 36px; background: rgba(111,203,168,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #6fcba8; }
+.t-name { font-size: 14px; font-weight: 500; color: #ddd9d0; }
+.t-status { font-size: 11px; color: #6fcba8; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.sdot { width: 5px; height: 5px; background: #6fcba8; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.change-key { font-size: 11px; color: rgba(221,217,208,0.2); cursor: pointer; }
+.change-key:hover { color: rgba(221,217,208,0.5); }
+
+.msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.06) transparent; }
+.msg { display: flex; gap: 8px; align-items: flex-end; }
+.msg.u { flex-direction: row-reverse; }
+.mav { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; flex-shrink: 0; }
+.mav.ai { background: rgba(111,203,168,0.15); color: #6fcba8; }
+.mav.u  { background: rgba(255,255,255,0.06); color: rgba(221,217,208,0.5); }
+.bub { max-width: 78%; padding: 10px 14px; font-size: 13px; line-height: 1.65; font-weight: 300; }
+.bub.ai { background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.07); border-radius: 12px 12px 12px 2px; color: rgba(221,217,208,0.85); }
+.bub.u  { background: rgba(111,203,168,0.12); border: 0.5px solid rgba(111,203,168,0.2); border-radius: 12px 12px 2px 12px; color: #ddd9d0; }
+.td { width: 5px; height: 5px; border-radius: 50%; background: rgba(111,203,168,0.4); animation: tb 1.2s infinite; display: inline-block; margin: 0 2px; }
+.td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
+@keyframes tb { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px; flex-shrink: 0; }
+.chip { background: rgba(111,203,168,0.07); border: 0.5px solid rgba(111,203,168,0.2); color: #6fcba8; font-size: 11px; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.chip:hover { background: rgba(111,203,168,0.14); }
+
+.input-row { display: flex; gap: 8px; padding: 10px 14px; background: #111820; border-top: 0.5px solid rgba(255,255,255,0.07); flex-shrink: 0; align-items: flex-end; }
+.minp { flex: 1; background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 8px 14px; font-size: 13px; color: #ddd9d0; font-family: 'DM Sans', sans-serif; resize: none; outline: none; min-height: 36px; max-height: 90px; line-height: 1.5; }
+.minp::placeholder { color: rgba(221,217,208,0.25); }
+.minp:focus { border-color: rgba(111,203,168,0.3); }
+.sbtn { width: 36px; height: 36px; background: #6fcba8; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.15s; }
+.sbtn:hover { opacity: 0.82; }
+.sbtn:disabled { opacity: 0.3; cursor: not-allowed; }
+.sbtn svg { width: 14px; height: 14px; fill: #0c1118; }
+.crisis { padding: 8px 16px; font-size: 10px; color: rgba(240,149,149,0.5); text-align: center; border-top: 0.5px solid rgba(255,255,255,0.05); flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div class="setup" id="setup">
+  <div class="setup-logo">Sahay<span>AI</span></div>
+  <div class="setup-tagline">Kota ke students ke liye — bina judgment ke</div>
+  <div class="setup-label">Groq API Key daalo (free milti hai)</div>
+  <input class="setup-input" id="keyInp" type="password" placeholder="gsk_xxxxxxxxxxxxxxxx" />
+  <div class="setup-err" id="setupErr">Key galat lag rahi hai. gsk_ se shuru honi chahiye.</div>
+  <button class="setup-btn" onclick="startChat()">Shuru karo →</button>
+  <div class="setup-note">
+    Free key kaise lein:<br>
+    1. <a href="https://console.groq.com" target="_blank">console.groq.com</a> pe jao<br>
+    2. Google se Sign Up karo (free)<br>
+    3. API Keys → Create Key → Copy karo<br>
+    4. Upar paste karo — done!<br><br>
+    Key sirf tumhare browser mein save hoti hai, kahi nahi jaati.
+  </div>
+</div>
+
+<!-- CHAT APP -->
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="av">S</div>
+    <div style="flex:1">
+      <div class="t-name">Sahay AI</div>
+      <div class="t-status"><div class="sdot"></div>Yahan hoon, sun raha hoon</div>
+    </div>
+    <div class="change-key" onclick="changeKey()">key badlo</div>
+  </div>
+  <div class="msgs" id="msgs">
+    <div class="msg">
+      <div class="mav ai">S</div>
+      <div class="bub ai">Namaste! Main Sahay hoon. Aaj kaise feel kar rahe ho? Koi bhi baat karo, bina judgment ke. 🌿</div>
+    </div>
+  </div>
+  <div class="chips" id="chips">
+    <div class="chip" onclick="qsend('Mujhe bahut pressure feel ho raha hai')">Pressure hai 😓</div>
+    <div class="chip" onclick="qsend('Hostel mein bahut akela lagta hai')">Akela hoon</div>
+    <div class="chip" onclick="qsend('Study mein mann nahi lag raha')">Motivation nahi</div>
+    <div class="chip" onclick="qsend('Mujhe breathing exercise batao')">Breathing exercise</div>
+  </div>
+  <div class="input-row">
+    <textarea class="minp" id="inp" placeholder="Kuch bhi likho…" rows="1"
+      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="sbtn" id="sbtn" onclick="sendMsg()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+    </button>
+  </div>
+  <div class="crisis">Emergency: iCall 9152987821 · Vandrevala 1860-2662-345</div>
+</div>
+
+<script>
+const SYSTEM = `You are Sahay AI, a caring mental health companion for JEE/NEET students in Kota, India (age 15-22).
+- Respond in Hinglish (mix Hindi + English naturally)
+- Be warm, empathetic like an older sibling
+- For distress: empathize first, normalize, gently explore, suggest small action
+- CRISIS (suicidal/self-harm): provide iCall 9152987821 and Vandrevala 1860-2662-345
+- Keep replies 3-5 sentences, conversational, never clinical`;
+
+let history = [], busy = false, apiKey = '';
+
+function startChat() {
+  const k = document.getElementById('keyInp').value.trim();
+  if (!k.startsWith('gsk_')) {
+    document.getElementById('setupErr').style.display = 'block';
+    return;
+  }
+  apiKey = k;
+  localStorage.setItem('groq_key', k);
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+}
+
+function changeKey() {
+  localStorage.removeItem('groq_key');
+  apiKey = ''; history = [];
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('setup').style.display = 'block';
+  document.getElementById('msgs').innerHTML = '<div class="msg"><div class="mav ai">S</div><div class="bub ai">Namaste! Main Sahay hoon. Aaj kaise feel kar rahe ho? 🌿</div></div>';
+  document.getElementById('chips').style.display = 'flex';
+}
+
+// Auto-login if key saved
+window.onload = () => {
+  const saved = localStorage.getItem('groq_key');
+  if (saved && saved.startsWith('gsk_')) {
+    apiKey = saved;
+    document.getElementById('keyInp').value = saved;
+    document.getElementById('setup').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+  }
+};
+
+function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,90)+'px'; }
+function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
+function qsend(t) { document.getElementById('inp').value=t; sendMsg(); }
+
+function addMsg(role, text) {
+  const c = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.className = 'msg'+(role==='user'?' u':'');
+  d.innerHTML = `<div class="mav ${role==='user'?'u':'ai'}">${role==='user'?'Tu':'S'}</div><div class="bub ${role==='user'?'u':'ai'}">${text}</div>`;
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
+}
+
+function showTyping() {
+  const c = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.className = 'msg'; d.id = 'typing';
+  d.innerHTML = '<div class="mav ai">S</div><div class="bub ai" style="padding:12px 16px"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
+}
+function removeTyping() { const t=document.getElementById('typing'); if(t) t.remove(); }
+
+async function sendMsg() {
+  if (busy) return;
+  const inp = document.getElementById('inp');
+  const text = inp.value.trim();
+  if (!text) return;
+  document.getElementById('chips').style.display = 'none';
+  inp.value = ''; inp.style.height = 'auto';
+  addMsg('user', text);
+  history.push({ role: 'user', content: text });
+  busy = true; document.getElementById('sbtn').disabled = true;
+  showTyping();
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 800,
+        messages: [{ role: 'system', content: SYSTEM }, ...history]
+      })
+    });
+    const data = await res.json();
+    if (data.error) {
+      removeTyping();
+      addMsg('ai', '❌ Error: ' + data.error.message + ' — Key dobara check karo.');
+    } else {
+      const reply = data.choices[0].message.content;
+      history.push({ role: 'assistant', content: reply });
+      removeTyping(); addMsg('ai', reply);
+    }
+  } catch(e) {
+    removeTyping();
+    addMsg('ai', '❌ Network error. Internet check karo aur dobara try karo.');
+  }
+  busy = false; document.getElementById('sbtn').disabled = false;
+}
+</script>
+</body>
+</html>
