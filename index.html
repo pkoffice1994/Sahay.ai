@@ -250,6 +250,109 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
 @media(max-width:450px){
   .chat-widget{width:calc(100vw - 20px);right:10px;bottom:100px;height:520px}
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media(max-width:600px){
+  /* Hide custom cursor on touch devices */
+  .cursor,.cursor-ring{display:none}
+  body{cursor:auto}
+
+  /* Lang + music bar smaller */
+  .lang-bar{top:12px;left:12px;gap:4px}
+  .lang-btn{padding:5px 10px;font-size:11px}
+  .music-bar{top:12px;right:12px;padding:6px 10px;gap:6px}
+  .music-label{display:none}
+
+  /* Hero */
+  .hero{min-height:100svh}
+  .hero-content{padding:1rem 1.2rem}
+  .hero-badge{font-size:10px;padding:5px 14px;letter-spacing:1px;margin-bottom:1rem}
+  .hero-title{font-size:clamp(2.2rem,10vw,3.5rem);margin-bottom:0.8rem}
+  .hero-sub{font-size:0.95rem;margin-bottom:2rem;padding:0 0.5rem}
+  .hero-btns{flex-direction:column;align-items:center;gap:10px}
+  .btn-primary,.btn-ghost{width:100%;max-width:260px;padding:13px 24px;font-size:14px}
+
+  /* Sections */
+  .section{padding:3.5rem 1.2rem}
+  .section-title{font-size:clamp(1.6rem,7vw,2.5rem);margin-bottom:1rem}
+  .section-body{font-size:14px;line-height:1.75}
+
+  /* Video grid - single column on mobile */
+  .vid-grid{grid-template-columns:1fr;gap:12px;margin-top:1.5rem}
+  .vid-card{border-radius:14px}
+  .vid-play{width:46px;height:46px}
+  .vid-title{font-size:0.95rem}
+
+  /* Video modal full screen on mobile */
+  .vid-modal-inner{width:100vw;height:100vh;border-radius:0;aspect-ratio:unset;display:flex;align-items:center}
+  .vid-modal-inner video{width:100%;height:auto}
+  .vid-modal-close{top:20px;right:16px;width:44px;height:44px;font-size:22px}
+
+  /* Cards row */
+  .cards-row{grid-template-columns:1fr;gap:10px;margin-top:1.5rem}
+  .info-card{padding:1.2rem}
+
+  /* Affirmations */
+  .affirmation-display{padding:2rem 1rem}
+  .aff-quote{font-size:clamp(1.15rem,5vw,1.6rem);margin:1rem auto}
+  .aff-author{font-size:11px;letter-spacing:1px}
+
+  /* Breathing */
+  .breath-circle-wrap{width:190px;height:190px;margin:2rem auto}
+
+  /* Floating chat button */
+  #chatBtn{bottom:20px;right:20px}
+  .chat-btn-inner{width:54px;height:54px}
+  .chat-btn-inner svg{width:22px;height:22px}
+  .chat-btn-label{font-size:10px;padding:3px 10px}
+  .chat-btn-ring{width:62px;height:62px}
+
+  /* Chat widget - full screen on mobile */
+  .chat-widget{
+    width:100vw;height:100svh;
+    right:0;bottom:0;
+    border-radius:0;
+    transform:scale(0.95) translateY(30px);
+    transform-origin:bottom center;
+  }
+  .chat-widget.open{transform:scale(1) translateY(0)}
+  .chat-app{border-radius:0;height:100%}
+  .chat-top{padding:14px 16px}
+  .chat-name{font-size:14px}
+  .msgs{padding:12px}
+  .bub{font-size:13px;max-width:85%}
+  .chips{padding:0 12px 8px;gap:5px}
+  .chip{font-size:11px;padding:5px 10px}
+  .inp-row{padding:8px 12px}
+  .minp{font-size:14px;padding:8px 12px}
+  .sbtn{width:40px;height:40px}
+  .crisis-bar{font-size:10px;padding:6px 12px}
+
+  /* Footer */
+  footer{padding:2rem 1.2rem}
+  .footer-logo{font-size:1.4rem}
+  .footer-crisis{font-size:11px;padding:8px 14px}
+
+  /* Scroll hint hidden on small screens */
+  .scroll-hint{display:none}
+}
+
+@media(min-width:601px) and (max-width:900px){
+  /* Tablet tweaks */
+  .section{padding:4rem 1.8rem}
+  .hero-title{font-size:clamp(2.8rem,8vw,5rem)}
+  .vid-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .cards-row{grid-template-columns:1fr 1fr;gap:12px}
+
+  .chat-widget{width:340px;height:500px;right:20px;bottom:90px}
+}
+
+/* Safe area for notch phones */
+@supports(padding:max(0px)){
+  .chat-widget{padding-bottom:env(safe-area-inset-bottom)}
+  #chatBtn{bottom:max(20px,env(safe-area-inset-bottom) + 12px)}
+  .inp-row{padding-bottom:max(8px,env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -956,15 +1059,21 @@ function toggleChat() {
   const icon = document.getElementById('chatIcon');
   const closeIc = document.getElementById('closeIcon');
   const notif = document.querySelector('.chat-notif');
-  const label = document.getElementById('chatBtnLabel');
   widget.classList.toggle('open', chatOpen);
   icon.style.display = chatOpen ? 'none' : 'block';
   closeIc.style.display = chatOpen ? 'block' : 'none';
   if(notif) notif.style.display = 'none';
+  // On mobile, prevent body scroll when chat is open
+  document.body.style.overflow = (chatOpen && window.innerWidth <= 600) ? 'hidden' : '';
   if(chatOpen) {
-    setTimeout(() => document.getElementById('inp').focus(), 400);
+    setTimeout(() => {
+      const inp = document.getElementById('inp');
+      if(inp) inp.focus();
+    }, 400);
   }
 }
+// Close chat on ESC
+document.addEventListener('keydown', e => { if(e.key==='Escape' && chatOpen) toggleChat(); });
 function scrollToChat() { toggleChat(); }
 
 // ===== BREATHING LABEL =====
