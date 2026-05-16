@@ -7,7 +7,6 @@ export default async function handler(req, res) {
 
   try {
     const { system, messages } = req.body;
-
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -23,18 +22,11 @@ export default async function handler(req, res) {
         ]
       })
     });
-
     const data = await response.json();
-
-    if (data.error) {
-      return res.status(400).json({ error: data.error.message });
-    }
-
-    // Convert Groq response to Anthropic-style so frontend works as-is
+    if (data.error) return res.status(400).json({ error: data.error.message });
     return res.status(200).json({
       content: [{ text: data.choices[0].message.content }]
     });
-
   } catch (e) {
     return res.status(500).json({ error: 'Proxy error', detail: e.message });
   }
