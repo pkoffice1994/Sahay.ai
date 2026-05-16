@@ -154,6 +154,29 @@ body{font-family:'DM Sans',sans-serif;background:#0d1f17;color:var(--cream);over
 .leaf{position:absolute;opacity:0;animation:leaffall linear infinite}
 @keyframes leaffall{0%{transform:translateY(-40px) rotate(0deg);opacity:0}10%{opacity:0.6}90%{opacity:0.3}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
+/* ===== VIDEO CARDS =====  */
+.vid-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:2.5rem}
+@media(max-width:700px){.vid-grid{grid-template-columns:1fr}}
+.vid-card{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/9;cursor:pointer;background:#0a1a10;border:0.5px solid rgba(126,200,164,0.15);transition:transform 0.4s ease,box-shadow 0.4s ease}
+.vid-card:hover{transform:scale(1.02);box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+.vid-card video{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s ease}
+.vid-card:hover video{transform:scale(1.05)}
+.vid-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,26,16,0.85) 0%,rgba(10,26,16,0.2) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:space-between;padding:1.2rem}
+.vid-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(126,200,164,0.2);border:1.5px solid rgba(126,200,164,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s;backdrop-filter:blur(4px)}
+.vid-card:hover .vid-play{background:rgba(126,200,164,0.4);transform:translate(-50%,-50%) scale(1.1)}
+.vid-play svg{width:20px;height:20px;fill:var(--mint);margin-left:3px}
+.vid-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mint);background:rgba(126,200,164,0.1);border:0.5px solid rgba(126,200,164,0.25);padding:4px 10px;border-radius:20px;align-self:flex-start;backdrop-filter:blur(4px)}
+.vid-info{display:flex;flex-direction:column;gap:4px}
+.vid-title{font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--cream);line-height:1.3}
+.vid-dur{font-size:11px;color:rgba(245,240,232,0.4)}
+.vid-modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9000;display:none;align-items:center;justify-content:center}
+.vid-modal.open{display:flex}
+.vid-modal-inner{position:relative;width:90vw;max-width:1100px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 40px 100px rgba(0,0,0,0.8)}
+.vid-modal-inner video{width:100%;height:100%;object-fit:cover}
+.vid-modal-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,0.6);border:0.5px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;backdrop-filter:blur(4px)}
+.vid-modal-close:hover{background:rgba(126,200,164,0.3)}
+.vid-modal-title{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);font-family:"Playfair Display",serif;font-size:1.3rem;color:#fff}
+
 /* ===== FOOTER ===== */
 footer{background:#060f09;padding:3rem 2rem;text-align:center}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--cream);margin-bottom:1rem}
@@ -218,25 +241,69 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
       <h2 class="section-title" id="v-title">Nature Reminds Us<br><span>You Can Grow Again</span></h2>
       <p class="section-body" id="v-body">Spend 5 minutes with nature. Science says it reduces cortisol by 21%. Let these videos be your mini-retreat between study sessions.</p>
     </div>
-    <div class="video-grid fade-up" style="transition-delay:0.2s">
-      <div class="video-frame">
-        <!-- Beautiful Forest River - Nature Relaxation -->
-        <iframe src="https://www.youtube.com/embed/BHACKCNDMW8?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
-      </div>
-      <div class="video-frame">
-        <!-- Relaxing Rain on Forest Leaves -->
-        <iframe src="https://www.youtube.com/embed/sGkh1W5cbH4?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+    <!-- Fullscreen Video Modal -->
+    <div class="vid-modal" id="vidModal" onclick="closeVid(event)">
+      <div class="vid-modal-inner">
+        <button class="vid-modal-close" onclick="closeModal()">✕</button>
+        <video id="modalVid" controls autoplay playsinline style="width:100%;height:100%;object-fit:cover"></video>
+        <div class="vid-modal-title" id="modalTitle"></div>
       </div>
     </div>
-    <div class="video-grid fade-up" style="transition-delay:0.35s;margin-top:16px">
-      <div class="video-frame">
-        <!-- Mountain Sunrise Timelapse - Motivational -->
-        <iframe src="https://www.youtube.com/embed/lFcSrYw-ARY?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+
+    <div class="vid-grid fade-up" style="transition-delay:0.2s">
+
+      <!-- Card 1: Misty Forest River -->
+      <div class="vid-card" onclick="openVid('https://www.w3schools.com/html/mov_bbb.mp4','🌊 Misty Forest River')">
+        <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+        <div class="vid-overlay">
+          <div class="vid-tag">🌊 Forest</div>
+          <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vid-info">
+            <div class="vid-title">Misty Forest River</div>
+            <div class="vid-dur">Click to watch fullscreen</div>
+          </div>
+        </div>
       </div>
-      <div class="video-frame">
-        <!-- Peaceful Waterfall Sounds -->
-        <iframe src="https://www.youtube.com/embed/V-_O7nl0Ii0?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+
+      <!-- Card 2: Rain on Leaves -->
+      <div class="vid-card" onclick="openVid('https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4','🌧️ Rain on Forest Leaves')">
+        <video src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+        <div class="vid-overlay">
+          <div class="vid-tag">🌧️ Rain</div>
+          <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vid-info">
+            <div class="vid-title">Rain on Forest Leaves</div>
+            <div class="vid-dur">Click to watch fullscreen</div>
+          </div>
+        </div>
       </div>
+
+      <!-- Card 3: Mountain Sunrise -->
+      <div class="vid-card" onclick="openVid('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4','🏔️ Mountain Sunrise')">
+        <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+        <div class="vid-overlay">
+          <div class="vid-tag">🏔️ Mountains</div>
+          <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vid-info">
+            <div class="vid-title">Mountain Sunrise Timelapse</div>
+            <div class="vid-dur">Click to watch fullscreen</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Waterfall -->
+      <div class="vid-card" onclick="openVid('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4','💧 Peaceful Waterfall')">
+        <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+        <div class="vid-overlay">
+          <div class="vid-tag">💧 Waterfall</div>
+          <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vid-info">
+            <div class="vid-title">Peaceful Waterfall Sounds</div>
+            <div class="vid-dur">Click to watch fullscreen</div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="cards-row fade-up" style="transition-delay:0.4s">
       <div class="info-card">
@@ -795,6 +862,30 @@ async function sendMsg() {
   }
   busy=false; document.getElementById('sbtn').disabled=false;
 }
+
+// ===== VIDEO MODAL =====
+function openVid(src, title) {
+  const modal = document.getElementById('vidModal');
+  const vid = document.getElementById('modalVid');
+  const t = document.getElementById('modalTitle');
+  vid.src = src;
+  t.textContent = title;
+  modal.classList.add('open');
+  vid.play();
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  const modal = document.getElementById('vidModal');
+  const vid = document.getElementById('modalVid');
+  modal.classList.remove('open');
+  vid.pause();
+  vid.src = '';
+  document.body.style.overflow = '';
+}
+function closeVid(e) {
+  if (e.target === document.getElementById('vidModal')) closeModal();
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
 
 // ===== SCROLL ANIMATIONS =====
 const obs = new IntersectionObserver(entries => {
