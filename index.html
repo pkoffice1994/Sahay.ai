@@ -220,10 +220,22 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
     </div>
     <div class="video-grid fade-up" style="transition-delay:0.2s">
       <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/inpok4MKVLM?autoplay=0&controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+        <!-- Beautiful Forest River - Nature Relaxation -->
+        <iframe src="https://www.youtube.com/embed/BHACKCNDMW8?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
       </div>
       <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/OJ994bSqS7E?autoplay=0&controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+        <!-- Relaxing Rain on Forest Leaves -->
+        <iframe src="https://www.youtube.com/embed/sGkh1W5cbH4?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="video-grid fade-up" style="transition-delay:0.35s;margin-top:16px">
+      <div class="video-frame">
+        <!-- Mountain Sunrise Timelapse - Motivational -->
+        <iframe src="https://www.youtube.com/embed/lFcSrYw-ARY?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+      </div>
+      <div class="video-frame">
+        <!-- Peaceful Waterfall Sounds -->
+        <iframe src="https://www.youtube.com/embed/V-_O7nl0Ii0?controls=1&rel=0&modestbranding=1" allowfullscreen></iframe>
       </div>
     </div>
     <div class="cards-row fade-up" style="transition-delay:0.4s">
@@ -447,30 +459,67 @@ setInterval(spawnLeaf, 2500);
 let audioCtx, musicOn = false, nodes = [];
 function createForestAmbience() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  // Multiple oscillators for rich texture
-  const freqs = [60, 120, 180, 240, 360];
+  const masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.55; // louder master volume
+  masterGain.connect(audioCtx.destination);
+
+  // Deep bass drone
+  const bass = audioCtx.createOscillator();
+  const bassGain = audioCtx.createGain();
+  const bassFilter = audioCtx.createBiquadFilter();
+  bassFilter.type = 'lowpass'; bassFilter.frequency.value = 200;
+  bass.type = 'sine'; bass.frequency.value = 55;
+  bassGain.gain.value = 0.5;
+  bass.connect(bassFilter); bassFilter.connect(bassGain); bassGain.connect(masterGain);
+  bass.start();
+
+  // Mid tones — forest ambience
+  const freqs = [110, 165, 220, 330, 440];
   freqs.forEach((freq, i) => {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 400;
-    osc.type = 'sine';
-    osc.frequency.value = freq + Math.random()*2;
-    gain.gain.value = 0.03 / (i+1);
-    osc.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
+    filter.type = 'bandpass'; filter.frequency.value = freq * 1.5; filter.Q.value = 0.8;
+    osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+    osc.frequency.value = freq;
+    gain.gain.value = 0.18 / (i + 1);
+    osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
     osc.start();
-    // Slowly modulate
+    // Slow LFO modulation for organic feel
     const lfo = audioCtx.createOscillator();
     const lfoGain = audioCtx.createGain();
-    lfo.frequency.value = 0.05 + i*0.02;
-    lfoGain.gain.value = 2;
+    lfo.frequency.value = 0.03 + i * 0.015;
+    lfoGain.gain.value = freq * 0.015;
     lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
     lfo.start();
-    nodes.push({osc, gain, lfo});
+    // Amplitude tremolo
+    const trem = audioCtx.createOscillator();
+    const tremGain = audioCtx.createGain();
+    trem.frequency.value = 0.08 + i * 0.03;
+    tremGain.gain.value = 0.06;
+    trem.connect(tremGain); tremGain.connect(gain.gain);
+    trem.start();
+    nodes.push({osc, gain, lfo, trem});
   });
+
+  // High shimmer — like birds/wind
+  const shimmer = audioCtx.createOscillator();
+  const shimmerGain = audioCtx.createGain();
+  const shimmerFilter = audioCtx.createBiquadFilter();
+  shimmerFilter.type = 'highpass'; shimmerFilter.frequency.value = 800;
+  shimmer.type = 'sine'; shimmer.frequency.value = 880;
+  shimmerGain.gain.value = 0.04;
+  shimmer.connect(shimmerFilter); shimmerFilter.connect(shimmerGain); shimmerGain.connect(masterGain);
+  shimmer.start();
+  nodes.push({osc: shimmer, gain: shimmerGain, lfo: null, trem: null});
+  nodes.push({osc: bass, gain: bassGain, lfo: null, trem: null});
 }
 function stopMusic() {
-  nodes.forEach(n => { try{n.osc.stop(); n.lfo.stop();}catch(e){} });
+  nodes.forEach(n => { 
+    try{n.osc.stop();}catch(e){}
+    try{if(n.lfo) n.lfo.stop();}catch(e){}
+    try{if(n.trem) n.trem.stop();}catch(e){}
+  });
   nodes = [];
 }
 function toggleMusic() {
