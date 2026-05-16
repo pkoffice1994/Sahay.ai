@@ -6,17 +6,35 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const { system, messages } = req.body;
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 1000,
+        messages: [
+          { role: 'system', content: system },
+          ...messages
+        ]
+      })
     });
+
     const data = await response.json();
-    return res.status(response.status).json(data);
+
+    if (data.error) {
+      return res.status(400).json({ error: data.error.message });
+    }
+
+    // Convert Groq response to Anthropic-style so frontend works as-is
+    return res.status(200).json({
+      content: [{ text: data.choices[0].message.content }]
+    });
+
   } catch (e) {
     return res.status(500).json({ error: 'Proxy error', detail: e.message });
   }
