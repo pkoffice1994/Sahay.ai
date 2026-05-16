@@ -187,6 +187,69 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
 /* ===== ANIMATIONS ===== */
 .fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
 .fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ===== FLOATING CHAT BUTTON ===== */
+#chatBtn{
+  position:fixed;bottom:28px;right:28px;z-index:1000;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;
+}
+.chat-btn-ring{
+  position:absolute;width:68px;height:68px;border-radius:50%;
+  border:1.5px solid rgba(126,200,164,0.4);
+  animation:ring-pulse 2.5s ease-in-out infinite;
+}
+@keyframes ring-pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.18);opacity:0.15}}
+.chat-btn-inner{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,#4a9e78,#2d7a56);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 30px rgba(74,158,120,0.5),0 0 0 0 rgba(126,200,164,0.4);
+  transition:all 0.3s ease;
+  position:relative;z-index:2;
+}
+#chatBtn:hover .chat-btn-inner{
+  transform:scale(1.08);
+  box-shadow:0 12px 40px rgba(74,158,120,0.7);
+}
+.chat-btn-inner svg{width:26px;height:26px;color:#fff}
+.chat-btn-label{
+  background:rgba(13,31,23,0.9);
+  border:0.5px solid rgba(126,200,164,0.25);
+  color:var(--mint);font-size:11px;letter-spacing:0.5px;
+  padding:4px 12px;border-radius:20px;
+  backdrop-filter:blur(8px);
+  white-space:nowrap;
+  transition:opacity 0.3s;
+}
+.chat-notif{
+  position:absolute;top:-2px;right:-2px;
+  width:18px;height:18px;border-radius:50%;
+  background:#e24b4b;color:#fff;
+  font-size:10px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  z-index:3;animation:notif-bounce 1s ease infinite;
+  border:2px solid #0d1f17;
+}
+@keyframes notif-bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
+/* ===== FLOATING CHAT WIDGET ===== */
+.chat-widget{
+  position:fixed;bottom:108px;right:28px;z-index:999;
+  width:370px;height:560px;
+  transform:scale(0.85) translateY(20px);
+  transform-origin:bottom right;
+  opacity:0;pointer-events:none;
+  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  filter:drop-shadow(0 20px 60px rgba(0,0,0,0.6));
+}
+.chat-widget.open{
+  transform:scale(1) translateY(0);
+  opacity:1;pointer-events:all;
+}
+@media(max-width:450px){
+  .chat-widget{width:calc(100vw - 20px);right:10px;bottom:100px;height:520px}
+}
 </style>
 </head>
 <body>
@@ -252,54 +315,54 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
 
     <div class="vid-grid fade-up" style="transition-delay:0.2s">
 
-      <!-- Card 1: Misty Forest River -->
-      <div class="vid-card" onclick="openVid('https://www.w3schools.com/html/mov_bbb.mp4','🌊 Misty Forest River')">
-        <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+      <!-- Card 1: Forest River HD - Pexels -->
+      <div class="vid-card" onclick="openVid('https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_24fps.mp4','🌊 Misty Forest River')">
+        <video src="https://videos.pexels.com/video-files/1448735/1448735-sd_640_360_24fps.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
         <div class="vid-overlay">
-          <div class="vid-tag">🌊 Forest</div>
+          <div class="vid-tag">🌊 Forest River</div>
           <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="vid-info">
             <div class="vid-title">Misty Forest River</div>
-            <div class="vid-dur">Click to watch fullscreen</div>
+            <div class="vid-dur">▶ Click for Full HD</div>
           </div>
         </div>
       </div>
 
-      <!-- Card 2: Rain on Leaves -->
-      <div class="vid-card" onclick="openVid('https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4','🌧️ Rain on Forest Leaves')">
-        <video src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+      <!-- Card 2: Green Forest - Pexels -->
+      <div class="vid-card" onclick="openVid('https://videos.pexels.com/video-files/856916/856916-uhd_2560_1440_25fps.mp4','🌿 Deep Green Forest')">
+        <video src="https://videos.pexels.com/video-files/856916/856916-sd_640_360_25fps.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
         <div class="vid-overlay">
-          <div class="vid-tag">🌧️ Rain</div>
+          <div class="vid-tag">🌿 Deep Forest</div>
           <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="vid-info">
-            <div class="vid-title">Rain on Forest Leaves</div>
-            <div class="vid-dur">Click to watch fullscreen</div>
+            <div class="vid-title">Deep Green Forest</div>
+            <div class="vid-dur">▶ Click for Full HD</div>
           </div>
         </div>
       </div>
 
-      <!-- Card 3: Mountain Sunrise -->
-      <div class="vid-card" onclick="openVid('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4','🏔️ Mountain Sunrise')">
-        <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+      <!-- Card 3: Ocean Waves - Pexels -->
+      <div class="vid-card" onclick="openVid('https://videos.pexels.com/video-files/1297084/1297084-uhd_2560_1440_24fps.mp4','🌊 Ocean Waves at Sunset')">
+        <video src="https://videos.pexels.com/video-files/1297084/1297084-sd_640_360_24fps.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+        <div class="vid-overlay">
+          <div class="vid-tag">🌅 Ocean</div>
+          <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vid-info">
+            <div class="vid-title">Ocean Waves at Sunset</div>
+            <div class="vid-dur">▶ Click for Full HD</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Mountain Valley - Pexels -->
+      <div class="vid-card" onclick="openVid('https://videos.pexels.com/video-files/1448726/1448726-uhd_2560_1440_24fps.mp4','🏔️ Mountain Valley')">
+        <video src="https://videos.pexels.com/video-files/1448726/1448726-sd_640_360_24fps.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
         <div class="vid-overlay">
           <div class="vid-tag">🏔️ Mountains</div>
           <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="vid-info">
-            <div class="vid-title">Mountain Sunrise Timelapse</div>
-            <div class="vid-dur">Click to watch fullscreen</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 4: Waterfall -->
-      <div class="vid-card" onclick="openVid('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4','💧 Peaceful Waterfall')">
-        <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
-        <div class="vid-overlay">
-          <div class="vid-tag">💧 Waterfall</div>
-          <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="vid-info">
-            <div class="vid-title">Peaceful Waterfall Sounds</div>
-            <div class="vid-dur">Click to watch fullscreen</div>
+            <div class="vid-title">Mountain Valley Calm</div>
+            <div class="vid-dur">▶ Click for Full HD</div>
           </div>
         </div>
       </div>
@@ -358,60 +421,52 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
   </div>
 </section>
 
-<!-- CHAT -->
-<section class="section chat-section" id="chatSection">
-  <div class="section-inner">
-    <div class="chat-wrapper">
-      <div class="chat-info fade-up">
-        <p class="section-label" id="ch-label">Talk to Sahay</p>
-        <h2 class="section-title" id="ch-title">A Friend Who<br><span>Always Listens</span></h2>
-        <p class="section-body" id="ch-body">Share anything — exam stress, loneliness, family pressure, or just how your day went. Sahay understands you.</p>
-        <div class="feature-list">
-          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text" id="f1">Speaks English, Hindi & Hinglish — talk naturally</div></div>
-          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text" id="f2">Zero judgment. Everything stays between us.</div></div>
-          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text" id="f3">Crisis support & helpline numbers always ready</div></div>
-          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text" id="f4">Breathing exercises, affirmations, coping tools</div></div>
-        </div>
-        <p style="margin-top:1.5rem;font-size:12px;color:rgba(245,240,232,0.25)">Powered by Anthropic Claude · Runs in your browser</p>
+<!-- FLOATING CHAT BUTTON + WIDGET -->
+<div id="chatBtn" onclick="toggleChat()" title="Talk to Sahay">
+  <div class="chat-btn-ring"></div>
+  <div class="chat-btn-inner">
+    <svg id="chatIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    <svg id="closeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </div>
+  <div class="chat-btn-label" id="chatBtnLabel">Talk to Sahay</div>
+  <div class="chat-notif">1</div>
+</div>
+
+<div id="chatWidget" class="chat-widget">
+  <div class="chat-app">
+    <div class="chat-top">
+      <div class="chat-av">🌿</div>
+      <div style="flex:1">
+        <div class="chat-name">Sahay AI</div>
+        <div class="chat-status"><div class="s-dot"></div><span id="st-label">Here for you, always</span></div>
       </div>
-      <div class="fade-up" style="transition-delay:0.2s">
-        <div class="chat-app">
-          <div class="chat-top">
-            <div class="chat-av">🌿</div>
-            <div>
-              <div class="chat-name">Sahay AI</div>
-              <div class="chat-status"><div class="s-dot"></div><span id="st-label">Here for you, always</span></div>
-            </div>
-            <div class="chat-lang-switch">
-              <button class="clang on" onclick="setChatLang('en')">EN</button>
-              <button class="clang" onclick="setChatLang('hi')">हि</button>
-              <button class="clang" onclick="setChatLang('hl')">Mix</button>
-            </div>
-          </div>
-          <div class="msgs" id="msgs">
-            <div class="msg">
-              <div class="mav ai">🌿</div>
-              <div class="bub ai" id="welcome-msg">Hello! I'm Sahay. How are you feeling today? Share anything — I'm here, with no judgment. 🌱</div>
-            </div>
-          </div>
-          <div class="chips" id="chips">
-            <div class="chip" onclick="qsend(getChip('p'))" id="chip-p">😓 Pressure</div>
-            <div class="chip" onclick="qsend(getChip('l'))" id="chip-l">Feeling lonely</div>
-            <div class="chip" onclick="qsend(getChip('m'))" id="chip-m">No motivation</div>
-            <div class="chip" onclick="qsend(getChip('b'))" id="chip-b">Breathing help</div>
-          </div>
-          <div class="inp-row">
-            <textarea class="minp" id="inp" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" id="inp" placeholder="Type anything…"></textarea>
-            <button class="sbtn" id="sbtn" onclick="sendMsg()">
-              <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-            </button>
-          </div>
-          <div class="crisis-bar">🆘 Emergency: iCall 9152987821 · Vandrevala 1860-2662-345</div>
-        </div>
+      <div class="chat-lang-switch">
+        <button class="clang on" onclick="setChatLang('en')">EN</button>
+        <button class="clang" onclick="setChatLang('hi')">हि</button>
+        <button class="clang" onclick="setChatLang('hl')">Mix</button>
       </div>
     </div>
+    <div class="msgs" id="msgs">
+      <div class="msg">
+        <div class="mav ai">🌿</div>
+        <div class="bub ai" id="welcome-msg">Hello! I'm Sahay. How are you feeling today? Share anything — I'm here, with no judgment. 🌱</div>
+      </div>
+    </div>
+    <div class="chips" id="chips">
+      <div class="chip" onclick="qsend(getChip('p'))" id="chip-p">😓 Pressure</div>
+      <div class="chip" onclick="qsend(getChip('l'))" id="chip-l">Feeling lonely</div>
+      <div class="chip" onclick="qsend(getChip('m'))" id="chip-m">No motivation</div>
+      <div class="chip" onclick="qsend(getChip('b'))" id="chip-b">Breathing help</div>
+    </div>
+    <div class="inp-row">
+      <textarea class="minp" id="inp" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" placeholder="Type anything…"></textarea>
+      <button class="sbtn" id="sbtn" onclick="sendMsg()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="crisis-bar">🆘 iCall 9152987821 · Vandrevala 1860-2662-345</div>
   </div>
-</section>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -823,7 +878,7 @@ function removeTyping() { const t=document.getElementById('typing'); if(t) t.rem
 function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,90)+'px'; }
 function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
 function qsend(t) { document.getElementById('inp').value=t; sendMsg(); }
-function scrollToChat() { document.getElementById('chatSection').scrollIntoView({behavior:'smooth'}); setTimeout(()=>document.getElementById('inp').focus(),800); }
+function scrollToChat() { toggleChat(); }
 function scrollToBreath() { document.getElementById('breathSection').scrollIntoView({behavior:'smooth'}); }
 
 async function sendMsg() {
@@ -892,6 +947,25 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, {threshold:0.1});
 document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+// ===== FLOATING CHAT TOGGLE =====
+let chatOpen = false;
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const widget = document.getElementById('chatWidget');
+  const icon = document.getElementById('chatIcon');
+  const closeIc = document.getElementById('closeIcon');
+  const notif = document.querySelector('.chat-notif');
+  const label = document.getElementById('chatBtnLabel');
+  widget.classList.toggle('open', chatOpen);
+  icon.style.display = chatOpen ? 'none' : 'block';
+  closeIc.style.display = chatOpen ? 'block' : 'none';
+  if(notif) notif.style.display = 'none';
+  if(chatOpen) {
+    setTimeout(() => document.getElementById('inp').focus(), 400);
+  }
+}
+function scrollToChat() { toggleChat(); }
 
 // ===== BREATHING LABEL =====
 const labels = {in:['BREATHE IN','सांस लो','Saans lo'], hold:['HOLD','रोको','Roko'], out:['BREATHE OUT','सांस छोड़ो','Saans chhordo']};
