@@ -183,13 +183,7 @@ body{font-family:'DM Sans',sans-serif;background:#0d1f17;color:var(--cream);over
 .vid-info{display:flex;flex-direction:column;gap:4px}
 .vid-title{font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--cream);line-height:1.3}
 .vid-dur{font-size:11px;color:rgba(245,240,232,0.4)}
-.vid-modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9000;display:none;align-items:center;justify-content:center}
-.vid-modal.open{display:flex}
-.vid-modal-inner{position:relative;width:90vw;max-width:1100px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 40px 100px rgba(0,0,0,0.8)}
-.vid-modal-inner video{width:100%;height:100%;object-fit:cover}
-.vid-modal-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,0.6);border:0.5px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;backdrop-filter:blur(4px)}
-.vid-modal-close:hover{background:rgba(126,200,164,0.3)}
-.vid-modal-title{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);font-family:"Playfair Display",serif;font-size:1.3rem;color:#fff}
+
 
 /* ===== FOOTER ===== */
 footer{background:#060f09;padding:3rem 2rem;text-align:center}
@@ -417,60 +411,54 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
       <h2 class="section-title" id="v-title">Nature Reminds Us<br><span>You Can Grow Again</span></h2>
       <p class="section-body" id="v-body">Spend 5 minutes with nature. Science says it reduces cortisol by 21%. Let these videos be your mini-retreat between study sessions.</p>
     </div>
-    <!-- Fullscreen Video Modal -->
-    <div class="vid-modal" id="vidModal" onclick="closeVid(event)">
-      <div class="vid-modal-inner" id="modalInner">
-        <!-- iframe injected by JS -->
-      </div>
-      <div class="vid-modal-title" id="modalTitle" style="display:none"></div>
-    </div>
+
 
     <div class="vid-grid fade-up" style="transition-delay:0.2s">
 
             <!-- Card 1: Forest River -->
-      <div class="vid-card" onclick="openYT('BHACKCNDMW8','🌊 Misty Forest River')">
+      <div class="vid-card" onclick="window.open('https://www.youtube.com/watch?v=BHACKCNDMW8','_blank')">
         <img src="https://img.youtube.com/vi/BHACKCNDMW8/maxresdefault.jpg" alt="Forest River" style="width:100%;height:100%;object-fit:cover;display:block">
         <div class="vid-overlay">
           <div class="vid-tag">🌊 Forest River</div>
           <div class="vid-info">
             <div class="vid-title">Misty Forest River</div>
-            <div class="vid-dur">Hover · Click to watch</div>
+            <div class="vid-dur">▶ Click to watch on YouTube</div>
           </div>
         </div>
       </div>
 
       <!-- Card 2: Deep Forest -->
-      <div class="vid-card" onclick="openYT('mPZkdNFkNps','🌿 Deep Green Forest')">
+      <div class="vid-card" onclick="window.open('https://www.youtube.com/watch?v=mPZkdNFkNps','_blank')">
         <img src="https://img.youtube.com/vi/mPZkdNFkNps/maxresdefault.jpg" alt="Deep Forest" style="width:100%;height:100%;object-fit:cover;display:block">
         <div class="vid-overlay">
           <div class="vid-tag">🌿 Forest</div>
           <div class="vid-info">
             <div class="vid-title">Deep Green Forest Walk</div>
-            <div class="vid-dur">Hover · Click to watch</div>
+            <div class="vid-dur">▶ Click to watch on YouTube</div>
           </div>
         </div>
       </div>
 
       <!-- Card 3: Ocean Sunset -->
-      <div class="vid-card" onclick="openYT('qW3gzHYFTiY','🌅 Ocean at Sunset')">
+      <div class="vid-card" onclick="window.open('https://www.youtube.com/watch?v=qW3gzHYFTiY','_blank')">
         <img src="https://img.youtube.com/vi/qW3gzHYFTiY/maxresdefault.jpg" alt="Ocean Sunset" style="width:100%;height:100%;object-fit:cover;display:block">
         <div class="vid-overlay">
           <div class="vid-tag">🌅 Ocean</div>
           <div class="vid-info">
             <div class="vid-title">Ocean Waves at Sunset</div>
-            <div class="vid-dur">Hover · Click to watch</div>
+            <div class="vid-dur">▶ Click to watch on YouTube</div>
           </div>
         </div>
       </div>
 
       <!-- Card 4: Mountain -->
-      <div class="vid-card" onclick="openYT('9RMHHwJ9Eqk','🏔️ Mountain Serenity')">
+      <div class="vid-card" onclick="window.open('https://www.youtube.com/watch?v=9RMHHwJ9Eqk','_blank')">
         <img src="https://img.youtube.com/vi/9RMHHwJ9Eqk/maxresdefault.jpg" alt="Mountain" style="width:100%;height:100%;object-fit:cover;display:block">
         <div class="vid-overlay">
           <div class="vid-tag">🏔️ Mountains</div>
           <div class="vid-info">
             <div class="vid-title">Mountain Valley Calm</div>
-            <div class="vid-dur">Hover · Click to watch</div>
+            <div class="vid-dur">▶ Click to watch on YouTube</div>
           </div>
         </div>
       </div>
@@ -687,7 +675,7 @@ setInterval(spawnLeaf, 2500);
 
 // ===== AMBIENT MUSIC via Web Audio =====
 // ===== MULTI-TRACK MUSIC SYSTEM =====
-let audioCtx, masterGain, nodes = [], currentTrack = null, masterVol = 0.6, panelOpen = false;
+let audioCtx, masterGain, nodes = [], currentTrack = null, masterVol = 0.35, panelOpen = false;
 
 function getAudioCtx() {
   if (!audioCtx) {
@@ -747,40 +735,41 @@ function makeLFO(target, rate, depth) {
 
 const TRACKS = {
   forest: () => {
-    // Rich forest: deep drones + bird shimmer
+    // Very soft forest — gentle low drones only
     const ns = [];
-    [[55,'sine',0.35,'lowpass',200],[110,'sine',0.18],[165,'triangle',0.1],[220,'sine',0.07],[330,'sine',0.04],[880,'sine',0.025,'highpass',600]].forEach(([f,t,g,ft,ff]) => {
+    [[55,'sine',0.06,'lowpass',180],[110,'sine',0.04,'lowpass',300],[220,'sine',0.025,'lowpass',400]].forEach(([f,t,g,ft,ff]) => {
       ns.push(makeOsc(f,t,g,ft,ff));
     });
-    ns.forEach((n,i) => { n.lfo = makeLFO(n.osc.frequency, 0.03+i*0.01, (i+1)*1.5); });
+    // Soft high shimmer like distant birds — very quiet
+    ns.push(makeOsc(880,'sine',0.008,'highpass',700));
+    ns.forEach((n,i) => { n.lfo = makeLFO(n.osc.frequency, 0.02+i*0.008, 0.8+i*0.5); });
     return ns;
   },
   rain: () => {
-    // Rain: noise-like rapid oscillators at random freqs
+    // Soft rain — gentle bandpass noise clusters, very low volume
     const ns = [];
-    for(let i=0;i<8;i++){
-      const f = 200 + Math.random()*2000;
-      ns.push(makeOsc(f, 'sine', 0.015+Math.random()*0.02, 'bandpass', f));
+    for(let i=0;i<6;i++){
+      const f = 300 + Math.random()*800;
+      ns.push(makeOsc(f,'sine',0.008+Math.random()*0.006,'bandpass',f));
     }
-    // Sub rumble
-    ns.push(makeOsc(40,'sine',0.3,'lowpass',100));
+    ns.push(makeOsc(45,'sine',0.05,'lowpass',90)); // soft sub rumble
     ns.forEach((n,i) => {
-      n.lfo = makeLFO(n.osc.frequency, 0.5+Math.random()*3, 10+Math.random()*50);
+      n.lfo = makeLFO(n.osc.frequency, 0.3+Math.random()*1.5, 5+Math.random()*20);
     });
     return ns;
   },
   ocean: () => {
-    // Ocean: slow swelling waves
+    // Soft ocean — very slow swells, minimal volume
     const ns = [];
-    [[40,'sine',0.4,'lowpass',120],[80,'sine',0.2,'lowpass',200],[160,'sine',0.1,'bandpass',160],[320,'sine',0.05]].forEach(([f,t,g,ft,ff])=>{
+    [[40,'sine',0.07,'lowpass',100],[80,'sine',0.04,'lowpass',180],[160,'sine',0.02,'bandpass',160]].forEach(([f,t,g,ft,ff])=>{
       ns.push(makeOsc(f,t,g,ft,ff));
     });
     ns.forEach((n,i) => {
       const ctx = getAudioCtx();
       const trem = ctx.createOscillator();
       const tg = ctx.createGain();
-      trem.frequency.value = 0.08 + i*0.03;
-      tg.gain.value = 0.25;
+      trem.frequency.value = 0.05 + i*0.02; // very slow swell
+      tg.gain.value = 0.04; // gentle
       trem.connect(tg); tg.connect(n.gain.gain);
       trem.start();
       n.trem = trem;
@@ -788,14 +777,15 @@ const TRACKS = {
     return ns;
   },
   night: () => {
-    // Night crickets: high freq chirps + deep bass
+    // Soft night — low crickets, no harsh highs
     const ns = [];
-    ns.push(makeOsc(50,'sine',0.3,'lowpass',150));
-    [[3200,'sine',0.03],[3400,'sine',0.025],[4000,'sine',0.02],[2800,'sine',0.025]].forEach(([f,t,g])=>{
+    ns.push(makeOsc(50,'sine',0.05,'lowpass',120));
+    // Gentle mid-range crickets only (not harsh high freq)
+    [[800,'sine',0.012],[1000,'sine',0.009],[1200,'sine',0.007]].forEach(([f,t,g])=>{
       ns.push(makeOsc(f,t,g,'bandpass',f));
     });
     ns.forEach((n,i) => {
-      if(i>0) n.lfo = makeLFO(n.osc.frequency, 4+i*1.5, 30);
+      if(i>0) n.lfo = makeLFO(n.osc.frequency, 2+i*0.8, 8);
     });
     return ns;
   }
@@ -1099,37 +1089,23 @@ async function sendMsg() {
   busy=false; document.getElementById('sbtn').disabled=false;
 }
 
-// ===== VIDEO MODAL (YouTube embed in modal) =====
-function openYT(id, title) {
-  const modal = document.getElementById('vidModal');
-  const inner = document.getElementById('modalInner');
-  const t = document.getElementById('modalTitle');
-  t.textContent = title;
-  // Inject iframe fresh each time (autoplay works this way)
-  inner.innerHTML = `
-    <button class="vid-modal-close" onclick="closeModal()">✕</button>
-    <iframe
-      src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1"
-      style="width:100%;height:100%;border:none"
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
-    <div class="vid-modal-title">${title}</div>
-  `;
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
+
+
+// ===== AUTO-START MUSIC ON FIRST INTERACTION =====
+let musicStarted = false;
+function autoStartMusic() {
+  if (musicStarted) return;
+  musicStarted = true;
+  playTrack('forest');
+  document.removeEventListener('click', autoStartMusic);
+  document.removeEventListener('touchstart', autoStartMusic);
+  document.removeEventListener('keydown', autoStartMusic);
+  document.removeEventListener('scroll', autoStartMusic);
 }
-function closeModal() {
-  const modal = document.getElementById('vidModal');
-  const inner = document.getElementById('modalInner');
-  inner.innerHTML = ''; // kills iframe = stops video
-  modal.classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closeVid(e) {
-  if (e.target === document.getElementById('vidModal')) closeModal();
-}
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+document.addEventListener('click', autoStartMusic);
+document.addEventListener('touchstart', autoStartMusic);
+document.addEventListener('keydown', autoStartMusic);
+document.addEventListener('scroll', autoStartMusic);
 
 // ===== SCROLL ANIMATIONS =====
 const obs = new IntersectionObserver(entries => {
