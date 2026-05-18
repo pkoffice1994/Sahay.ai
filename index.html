@@ -12,10 +12,7 @@
   --gold:#c9a84c;--sky:#1a2d4a;--mist:rgba(126,200,164,0.12);
 }
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:#0d1f17;color:var(--cream);overflow-x:hidden;cursor:none}
-
-/* Custom cursor */
-.cursor{position:fixed;width:12px;height:12px;background:var(--mint);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease;mix-blend-mode:difference}
+body{font-family:'DM Sans',sans-serif;background:#0d1f17;color:var(--cream);overflow-x:hidden;cursor:auto}
 
 
 /* ===== HERO ===== */
@@ -225,7 +222,7 @@ body{font-family:'DM Sans',sans-serif;background:#0d1f17;color:var(--cream);over
 .vid-card video{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s ease}
 .vid-card:hover video{transform:scale(1.05)}
 .vid-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,26,16,0.85) 0%,rgba(10,26,16,0.2) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:space-between;padding:1.2rem}
-.vid-card{cursor:none}
+.vid-card{cursor:auto}
 .vid-cursor{position:fixed;pointer-events:none;z-index:8000;display:none;background:rgba(126,200,164,0.15);border:1.5px solid var(--mint);border-radius:50%;width:70px;height:70px;transform:translate(-50%,-50%);transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mint);letter-spacing:1px;font-family:"DM Sans",sans-serif;backdrop-filter:blur(4px)}
 .vid-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mint);background:rgba(126,200,164,0.1);border:0.5px solid rgba(126,200,164,0.25);padding:4px 10px;border-radius:20px;align-self:flex-start;backdrop-filter:blur(4px)}
 .vid-info{display:flex;flex-direction:column;gap:4px}
@@ -426,8 +423,6 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
 <body>
 
 <!-- CURSORS -->
-<div class="cursor" id="cursor"></div>
-<div class="vid-cursor" id="vidCursor">PLAY</div>
 
 
 <!-- VIDEO MODAL -->
@@ -672,15 +667,7 @@ footer{background:#060f09;padding:3rem 2rem;text-align:center}
 
 <script>
 // ===== CURSOR =====
-const cur = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  cur.style.left = e.clientX - 6 + 'px';
-  cur.style.top = e.clientY - 6 + 'px';
-  
-});
-document.querySelectorAll('button,a,.chip,.lang-btn,.clang,.music-bar').forEach(el => {
 
-});
 
 // ===== CANVAS PARTICLE FOREST =====
 const canvas = document.getElementById('c');
@@ -859,20 +846,7 @@ function closeVid(e) {
 }
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 
-// ===== VIDEO HOVER CURSOR =====
-const vidCursor = document.getElementById('vidCursor');
-document.querySelectorAll('.vid-card').forEach(card => {
-  card.addEventListener('mouseenter', () => {
-    if(window.innerWidth > 768) vidCursor.style.display = 'flex';
-  });
-  card.addEventListener('mouseleave', () => {
-    vidCursor.style.display = 'none';
-  });
-  card.addEventListener('mousemove', (e) => {
-    vidCursor.style.left = e.clientX + 'px';
-    vidCursor.style.top = e.clientY + 'px';
-  });
-});
+
 
 // ===== LANGUAGE SYSTEM =====
 let currentLang = 'en', chatLang = 'en';
